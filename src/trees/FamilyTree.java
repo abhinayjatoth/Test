@@ -31,7 +31,8 @@ public class FamilyTree
         
         void addChild(TreeNode childNode)
         {
-            this.children.add(childNode);
+            children.add(childNode);
+            childNode.parent = this;
         	// Add childNode to this node's children list. Also
             // set childNode's parent to this node.
         }
@@ -48,7 +49,10 @@ public class FamilyTree
             // No, recurse. Check all children of this node.
             for (TreeNode child: children)
             {
-                return child.getNodeWithName(targetName);
+                TreeNode t = child.getNodeWithName(targetName);
+                if(t!=null) {
+                	return t;
+                }
                 // then that's the node we're looking for. Return it.
             }
             
@@ -62,12 +66,13 @@ public class FamilyTree
         ArrayList<TreeNode> collectAncestorsToList()
         {
             ArrayList<TreeNode> ancestors = new ArrayList<>();
-
-            // ?????  Collect ancestors of this TreeNode into the array list. HINT: going up
-            // the nodes of a tree is like traversing a linked list. If that isn’t clear,
-            // draw a tree, mark any leaf node, and then mark its ancestors in order from
-            // recent to ancient. Expect a question about this on the final exam.
-
+            TreeNode current = this.parent;
+            if(current!=null)
+            {
+            	ancestors.add(current);
+            	current = current.parent;
+            }
+            
             return ancestors;
         }
         
@@ -110,8 +115,8 @@ public class FamilyTree
 
 		// Parse the input file. Create a FileReader that reads treeFile. Create a BufferedReader
 		// that reads from the FileReader.
-		FileReader fr = ???
-		BufferedReader br = ???
+		FileReader fr = new FileReader(treeFile);
+		BufferedReader br = new BufferedReader(fr);
 		String line;
 		while ((line = br.readLine()) != null)
 			addLine(line);
